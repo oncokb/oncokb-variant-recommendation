@@ -103,6 +103,7 @@ Visit localhost:8080 in your browser.
 
 
 ### Note:
+- The Airflow dag code read msk samples locally. Users may need to create a data folder to store msk data and modify the code according to the actual situation.
 - The object file structure should looks like:
 ```
 Object
@@ -138,9 +139,9 @@ Choose connections under Admin, create a new connection. Give a unique `Connecti
 3. Change ObjectStoragePath in your dag python file
 
 ```sh
-base = ObjectStoragePath("s3://aws_default@bucket_name/")
+base = ObjectStoragePath("s3://my_aws_s3@bucket_name/")
 ```
-Change aws_default to your unique Connection Id.
+Change my_aws_s3 to your unique Connection Id.
 
 ## Test Airflow
 With the Airflow CLI, run to test your dag, you can check the result and logs at Airflow UI.
