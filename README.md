@@ -63,15 +63,15 @@ pip install 'apache-airflow==2.9.1' \
 - More details in [Airflow document](https://airflow.apache.org/docs/apache-airflow/stable/installation/index.html#using-pypi)
 
 ### Initialize Airflow
-1. Create an airflow folder under your object, and create a dags folder under airflow:
+1. Create an airflow folder under your object, and create a dags folder under airflow. 
 
-2. Set Airflow Home 
+2. To configure Airflow to recognize your DAGs directory, you need to set the `AIRFLOW_HOME` environment variable. replacing `/path/to/dags/folder/parent/folder` with the actual path to your desired directory:
    
 ```sh
-export AIRFLOW_HOME=~/airflow
+export AIRFLOW_HOME= path/to/dags/flod/parent/flod
 ```
 
-3. Run Airflow Standalone
+3. Run Airflow Standalone, and get the default username and password.
 
 ```sh
 airflow standalone
@@ -79,7 +79,7 @@ airflow standalone
 
 The command initializes the database, creates a user, and starts all components.
 
-- If you want to run the individual parts of Airflow manually rather than using the all-in-one standalone command, you can instead run:
+- If you prefer to run individual components of Airflow manually, or if you need personalized user information, instead of using the all-in-one standalone command, you can run the following:
 ```sh
 airflow db init
 
@@ -101,47 +101,12 @@ airflow triggerer
 4. Access the Airflow UI:
 Visit localhost:8080 in your browser.
 
+5. Connect to AWS S3: Choose connections under Admin, create a new connection. Input `oncokb_s3` in `Connection Id`, choose `Connection Type` as Amazon Web Services , and input `AWS Access Key ID` and `AWS Secret Access Key`.
+
+6. Connect to MySQL: Choose connections under Admin, create a new connection. Input `oncokb_mysql` in `Connection Id`, choose `Connection Type` as MySQL , and input`Host`,`schema`,`login`,`password` and `port`.
 
 ### Note:
-- The Airflow dag code read msk samples locally. Users may need to create a data folder to store msk data and modify the code according to the actual situation.
-- The object file structure should looks like:
-```
-Object
-├── airflow
-│   ├──  dags
-│   │    ├── my_dag.py 
-│   │    └── ...
-│   ├── logs 
-│   │   ├── my_dag
-│   │   ├── ...
-│   │   └── scheduler
-│   ├── airflow.db
-│   ├── airflow.cfg  
-│   └── ...
-├── .venv
-├── requirements.txt
-└── ...
-```
-
-- If you want to close all Airflow DAG examples on Airflow webserver. Open airflow.cfg and change `load_examples = False`
-
-## Connect to AWS S3
-
-1.Install package
-```sh
-pip install apache-airflow-providers-amazon[s3fs]
-```
-
-2. Create connections on Airflow
-
-Choose connections under Admin, create a new connection. Give a unique `Connection Id`, choose `Connection Type` as Amazon Web Services , Input `AWS Access Key ID` and `AWS Secret Access Key`.
-
-3. Change ObjectStoragePath in your dag python file
-
-```sh
-base = ObjectStoragePath("s3://my_aws_s3@bucket_name/")
-```
-Change my_aws_s3 to your unique Connection Id.
+- If you want to close all Airflow DAG or connectionsexamples on Airflow webserver. Open airflow.cfg and change `load_examples = False` or `load_default_connections = False`.
 
 ## Test Airflow
 With the Airflow CLI, run to test your dag, you can check the result and logs at Airflow UI.
@@ -153,3 +118,4 @@ You can use CLI to list all dags you have.
 ```
 airflow dags list
 ```
+
